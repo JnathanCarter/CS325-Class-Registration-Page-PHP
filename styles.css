@@ -1,0 +1,36 @@
+body {
+    margin-top: 0px;
+}
+.headerdiv {
+    text-emphasis: Bold;
+    background-color: rgba(210, 21, 21, 0.907);
+    font-weight: 400;
+    font-size: 550%;
+    text-align: left;
+}
+
+.headerp {
+    margin-top: 0%;
+    margin-bottom: auto;
+}
+
+.banner {
+    margin-top: 2%;
+    margin-bottom: 0%;
+    font-size: 250%;
+}
+
+.fillline {
+    background-color: rgba(210, 21, 21, 0.907);
+    height: 50 px;
+    width: 100%;
+    color: transparent;
+}
+
+.filllinep {
+    margin: 0%;
+    font-size: x-small;
+}
+.fieldlabeltextinvisible {
+    display: none;
+}
