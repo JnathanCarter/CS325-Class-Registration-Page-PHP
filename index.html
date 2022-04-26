@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <title>Class Schedule Search</title>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="script.js"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="styles.css">
+</head>
+
+<body>
+
+        <div class="headerdiv" id="outputdiv">
+                <p class="headerp">MyJSU </p>
+        </div>
+
+        <p class="banner">Class Schedule Search</p>
+        <div class="fillline">
+                <p class="filllinep"> dummy text</p>
+        </div>
+
+        <form name="inputform" id="inputform" method="POST" action="search.php">
+                <table name="subjecttable" id="subjecttabel">
+                        <tr>
+                                <td>
+                                        <label for="subj_id">
+                                                <span>Subject:</span>
+                                        </label>
+                                </td>
+                                <td>
+                                        <select name="subj_id" id="subj_id">
+
+                                        </select>
+
+                                </td>
+
+                        </tr>
+                </table>
+                <table name="courseinfotable" id="courseinfotable">
+                        <tr>
+                                <td>Course Number</td>
+                                <td><input type="number" name="number" id="number"></td>
+                        </tr>
+                        <tr>
+                                <td>Title:</td>
+                                <td><input type="text" name="title" id="title"></td>
+                        </tr>
+                        <tr>
+                                <td>
+                                        <label for="scheduletypeid">
+                                                <span>Schedule Type:</span>
+                                        </label>
+                                </td>
+                                <td>
+                                        <select name="scheduletypeid" id="scheduletypeid">
+
+                                        </select>
+
+                                </td>
+
+                        </tr>
+                        <tr>
+                                <td>Start Time: </td>
+                                <td>
+                                        <label for="begin_hh_id">
+                                                Hour:
+                                        </label>
+                                        <select name="begin_hh" id="begin_hh"></select>
+                                </td>
+                                <td>
+                                        <label for="begin_mm_id">
+                                                Minute:
+                                        </label>
+                                        <select name="begin_mm" id="begin_mm"></select>
+                                </td>
+                                <td>
+                                        <label for="begin_ap_id">
+                                                am/pm:
+                                        </label>
+                                        <select name="begin_ap" id="begin_ap">
+                                                <option value="am">AM</option>
+                                                <option value="pm">PM</option>
+                                        </select>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td>End Time: </td>
+                                <td>
+                                        <label for="end_hh_id">
+                                                Hour:
+                                        </label>
+                                        <select name="end_hh" id="end_hh"></select>
+                                </td>
+                                <td>
+                                        <label for="end_mm_id">
+                                                Minute:
+                                        </label>
+                                        <select name="end_mm" id="end_mm"></select>
+                                </td>
+                                <td>
+                                        <label for="end_ap_id">
+                                                am/pm:
+                                        </label>
+                                        <select name="end_ap" id="end_ap">
+                                                <option value="am">AM</option>
+                                                <option value="pm">PM</option>
+                                        </select>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td class="pllabel">Days: </td>
+                                <td width="11%">
+                                        <input type="checkbox" name="sel_mwf" value="mwf" id="sel_mwf">
+
+
+                                        <abbr title="MWF">MWF</abbr>
+                                </td>
+                                <td width="11%">
+                                        <input type="checkbox" name="sel_tr" value="tr" id="sel_tr">
+                                        <abbr title="TR">TR</abbr>
+                                </td>
+                                <td width="11%">
+                                        <input type="checkbox" name="sel_any" value="any" id="sel_any">
+                                        <abbr title="any">all</abbr>
+                                </td>
+
+                        </tr>
+                </table>
+                <br>
+                <input type="submit" value="Submit">
+                <input type="reset" value="Reset" onclick="Project3.reset();">
+        </form>
+        <div id="output">
+
+        </div>
+
+        <script type="text/javascript">
+                Project3.start();
+        </script>
+
+</body>
+
+</html>
