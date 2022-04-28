@@ -9,7 +9,8 @@
 </head>
 
 <body>
-        <?php function contstructTime($hours, $minute)
+        <?php
+        function contstructTime($hours, $minute)
         {
                 return "$hours:$minute:00";
         }
@@ -93,37 +94,28 @@
                         echo "<p> $key ---------- $vale</p>";
                 }
 
+                //change name of subj_id key so that it will work in query string
+                $subjectid = $changedValues["subj_id"];
+                unset($changedValues['subj_id']);
+                $changedValues["subjectid"] = $subjectid;
 
 
                 $cURL = curl_init();
-
-                $url = "http://ec2-3-143-211-101.us-east-2.compute.amazonaws.com/CS325_Project3/search";
-
+                $url = "http://ec2-3-143-211-101.us-east-2.compute.amazonaws.com/CS325_Project3/search";    // Web Service URL (for GET)
                 $url = $url . '?' . http_build_query($changedValues);
-
                 curl_setopt($cURL, CURLOPT_URL, $url);
-                // Set URL
                 curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
-                // Return Transfer as String
                 $output = curl_exec($cURL);
-                // Execute Transfer (returns JSON)
-                curl_close($cURL);
-                // Close cURL Session
+                curl_close($cURL);                                       // Close cURL Session
+
+
                 echo "<p>";
-                // Begin Output Paragraph
+                echo $url . "<br>";
+
                 $json = json_decode($output, true);
-                // Decode JSON String
-                foreach ($json as $key => $value) { // Print JSON Key/Value Pairs
-                        echo "$key: " . var_export($value, true) . "<br />";
-                }
-                echo "</p>
-                <p>";
-                // Begin New Output Paragraph
-                $jsonString = json_encode($json);
-                // Encode JSON Array to a String
-                echo $jsonString;
-                // Print Encoded JSON String
-                echo "</p>";
+                echo $output;
+
+
 
                 /*
                 echo "<p>url--------------$url";
@@ -139,7 +131,6 @@
                         echo "
                 <p>";
                 
-                        $json = json_decode($output, true);
                         
                         foreach ($json as $key => $value) {
                         echo "$key: " . var_export($value, true) . "<br />";
