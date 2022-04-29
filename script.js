@@ -123,7 +123,7 @@ var Project4 = (function () {
                 //get info from the user and get info from api
                 submitForm: function () {
                         userinput.subjectid = $("#subj_id").val().trim();
-                        userinput.num = $("#number").val().trim();
+                        userinput.num = $("#num").val().trim();
                         userinput.title = $("#title").val().trim();
 
                         userinput.scheduletypeid = $("#scheduletypeid").val().trim();

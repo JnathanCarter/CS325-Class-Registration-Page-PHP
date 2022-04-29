@@ -9,42 +9,43 @@
 </head>
 
 <body>
+        <h1>Sections Found</h1>
         <?php
-        function contstructTime($hours, $minute)
-        {
-                return "$hours:$minute:00";
-        }
 
-        $changedValues = [];
+        $diagnostic = FALSE;     //making this flag true will output different diagnostic data to the page   
+
+
+        $changedValues = [];    //array will hold all keys/values that have been selected from form,
+        //also will be  used to generate query parameters
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 echo "<p>This is a GET request.</p>\n";
         } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $beginHour = $_POST['begin_hh'];
-                $beginMinute = $_POST['begin_mm'];
 
-                $endHour = $_POST['end_hh'];
-                $endMinute = $_POST['end_mm'];
-                $beginAP = $_POST['begin_ap'];
-
-                $endAP = $_POST['end_ap'];
                 $beginTimechange = false;
                 $endTimechange = false;
+
                 //adds values to changedValuearray if the values are not defaults
                 foreach ($_POST as $key => $vale) {
 
+                        //check if value has changed from default
                         if ($vale != "default" && $vale != "") {
-                                echo "<p>Changed Key: $key, Changed Value: $vale </p>";
 
+                                //print diagnostic if flag is true
+                                if ($diagnostic) {
 
+                                        echo "<p>Changed Key: $key, Changed Value: $vale </p>";
+                                }
+
+                                //if it has changed from default it is added to $changeValues
                                 $changedValues[$key] = $vale;
                         }
                 }
 
-                //if time has changed convert it to 24 hour formatted time string for get reuest
+                //if the time is not default; 
+                //get all time data and format into 24 hour formatted time string for query
                 if (array_key_exists("begin_hh", $changedValues)) {
 
-                        $beginTimechange = true;
 
 
                         if ($changedValues["begin_ap"] == "pm") {
@@ -71,86 +72,90 @@
 
                         $changedValues["end"] = $endFormatted;
                 }
+
                 //remove individual time fields
                 $removeBegin = ['begin_hh', 'begin_mm', 'begin_ap'];
-
                 foreach ($removeBegin as $key) {
                         unset($changedValues[$key]);
                 }
+
                 $removeEnd = ['end_hh', 'end_mm', 'end_ap'];
-
-
                 foreach ($removeEnd as $key) {
                         unset($changedValues[$key]);
                 }
-                //if days is set to any remove days
 
+
+                //if days is set to any remove days
                 if ($changedValues['days'] == "any") {
 
                         unset($changedValues['days']);
                 }
-                //diagnostic print
-                foreach ($changedValues as $key => $vale) {
-                        echo "<p> $key ---------- $vale</p>";
+
+                //diagnostic print if flag is true
+                if ($diagnostic) {
+                        //diagnostic print
+                        foreach ($changedValues as $key => $vale) {
+                                echo "<p> $key ---------- $vale</p>";
+                        }
                 }
 
-                //change name of subj_id key so that it will work in query string
+
+
+                /*
+                        Change name of key for subject
+                       
+                        ---------------------------------------------------------------------------------------------- 
+                        NOTE : This could be Fixed by changing HTML element id/name and refctoring JS for dynamic HTML
+                        ----------------------------------------------------------------------------------------------
+                */
                 $subjectid = $changedValues["subj_id"];
                 unset($changedValues['subj_id']);
                 $changedValues["subjectid"] = $subjectid;
 
 
+
+                //make get request
                 $cURL = curl_init();
-                $url = "http://ec2-3-143-211-101.us-east-2.compute.amazonaws.com/CS325_Project3/search";    // Web Service URL (for GET)
+                $url = "http://ec2-3-143-211-101.us-east-2.compute.amazonaws.com/CS325_Project3/search";
                 $url = $url . '?' . http_build_query($changedValues);
                 curl_setopt($cURL, CURLOPT_URL, $url);
                 curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
                 $output = curl_exec($cURL);
-                curl_close($cURL);                                       // Close cURL Session
+                curl_close($cURL);
 
+                //display diagnostic get url
+                if ($diagnostic) {
 
-                echo "<p>";
-                echo $url . "<br>";
+                        echo "<p>";
+                        echo $url . "<br>";
+                        echo $output;
+                }
 
+                //decode data to $json
                 $json = json_decode($output, true);
-                echo $output;
 
 
 
-                /*
-                echo "<p>url--------------$url";
-                
-                        curl_setopt($cURL, CURLOPT_URL, $url);
-                        
-                        curl_setopt($cURL, CURLOPT_RETURNTRANSFER, true);
-                        
-                        $output = curl_exec($cURL);
-                        
-                        curl_close($cURL);
-                        
-                        echo "
-                <p>";
-                
-                        
-                        foreach ($json as $key => $value) {
-                        echo "$key: " . var_export($value, true) . "<br />";
-                        
-                        }
-                        echo "</p>
-                <p>";
-                
-                        $jsonString = json_encode($json);
-                        
-                        echo $jsonString;
-                        
-                        echo "</p>";
-                        
-                */
+                //Output search results
+                foreach ($json as $course) {
+                        echo "<h3>" . $course['description'] . " - " . $course['crn'] . " - " . $course['subjectid'] . " - " . $course['num'] . " - " . $course['section'] . "</h3>";
+                        echo "<p>" . "Course Level:   " . $course["level"] . "</p>";
+                        echo "<p>" . "Credit Hours:   " . $course["credits"] . "</p>";
+                        echo "<p>" . "Term ID:   " . $course["termid"] . "</p>";
+                        echo "<p>" . "Course Level:   " . $course["level"] . "</p>";
+                        echo "<p>" . "Course Type:   " . $course["scheduletype"] . "</p>";
+
+                        echo "<p>" . "Instructor:   " . $course["instructor"] . "</p>";
+                        echo "<p>" . "Location:   " . $course["where"] . "</p>";
+                        echo "<p>" . "Start Time: " . $course["start"] . "  " . "     End Time" . $course["end"] . "</p>";
+                        echo "<p>" . "Class Days: " . $course["days"] . "</p>";
+                }
         }
 
 
 
         ?>
+        <a href="../CS325-Class-Registration-Page-PHP/index.html">Return to Search</a>
 </body>
 
 </html>
